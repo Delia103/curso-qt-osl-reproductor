@@ -18,6 +18,34 @@ MainWindow::MainWindow(QWidget *parent) :
     btnPlay_      = new QToolButton(this);
     btnPause_     = new QToolButton(this);
     btnStop_      = new QToolButton(this);
+    mainMenu_     = new QMenuBar(this);
+
+    mnuArchivo_   = new QMenu(tr("&Archivo"), this);
+    mainMenu_->addMenu(mnuArchivo_);
+    actArchivoAbrir_ = new QAction(tr("&Abrir"), this);
+    mnuArchivo_->addAction(actArchivoAbrir_);
+
+    mnuVer_       = new QMenu(tr("&Ver"), this);
+    mainMenu_->addMenu(mnuVer_);
+    mnuAyuda_     = new QMenu(tr("&Ayuda"), this);
+    actVerPantallaCompleta_= new QAction(tr("&PantallaCompleta"), this);
+    actVerPantallaCompleta_->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+    mnuVer_->addAction(actVerPantallaCompleta_);
+    actVerMetadatos_= new QAction(tr("&Metadatos"), this);
+    mnuVer_->addAction(actVerMetadatos_);
+
+    mainMenu_->addMenu(mnuAyuda_);
+    actAyudaAcercade_= new QAction(tr("&Acercade"), this);
+    mnuAyuda_->addAction(actAyudaAcercade_);
+    //-----------------
+
+
+
+
+    //Agregamos la barra de menú
+    this->setMenuBar(mainMenu_);
+
+
 
     //Setup widwgets
     videoWidget_->setMinimumSize(400, 400);
@@ -51,12 +79,21 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mediaPlayer_,  SIGNAL(durationChanged(qint64)), this,         SLOT(onDurationChanged(qint64)));
     connect(mediaPlayer_,  SIGNAL(positionChanged(qint64)), this,         SLOT(onPositionChanged(qint64)));
     connect(volumeSlider_, SIGNAL(sliderMoved(int)),        this,         SLOT(onVolumeChanged(int)));
+    connect(actArchivoAbrir_,SIGNAL(triggered()),           this,         SLOT(onOpen()));
+    connect(actVerPantallaCompleta_,SIGNAL(triggered()),    this,         SLOT(showFullScreen()));
+    connect(actAyudaAcercade_ , SIGNAL(triggered()),        this,         SLOT(alAcercade()));
+    //--------------------------------
+    connect(openRecentFile_,SIGNAL(triggered(),            this,         SLOT(openFile()));
+
+
 }
 
 MainWindow::~MainWindow()
 {
 
 }
+
+
 
 void MainWindow::onOpen()
 {
@@ -66,6 +103,12 @@ void MainWindow::onOpen()
     if (fileName != "") {
         mediaPlayer_->setMedia(QUrl::fromLocalFile(fileName));
     }
+
+}
+
+void MainWindow::showFullScreen()
+{
+    videoWidget_->setFullScreen(!videoWidget_->isFullScreen());
 }
 
 void MainWindow::onSeek()
@@ -86,4 +129,15 @@ void MainWindow::onPositionChanged(qint64 position)
 void MainWindow::onVolumeChanged(int volume)
 {
     mediaPlayer_->setVolume(volume);
+
 }
+
+void MainWindow::alAcercade()
+{
+    QMessageBox msgBox;
+    msgBox.setText("Message Box: About");
+    msgBox.exec();
+}
+
+//--------------------------------------------
+

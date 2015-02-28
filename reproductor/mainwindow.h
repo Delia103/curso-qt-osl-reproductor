@@ -10,6 +10,11 @@
 #include <QSlider>
 #include <QFileDialog>
 #include <QToolButton>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
+
 
 class MainWindow : public QMainWindow
 {
@@ -30,6 +35,17 @@ private:
     QToolButton*        btnPlay_;
     QToolButton*        btnPause_;
     QToolButton*        btnStop_;
+    QMenuBar*           mainMenu_;
+    QMenu*              mnuArchivo_;
+    QAction*            actArchivoAbrir_;
+    QMenu*              mnuAyuda_;
+    QAction*            actAyudaAcercade_;
+    QMenu*              mnuVer_;
+    QAction*            actVerPantallaCompleta_;
+    QAction*            actVerMetadatos_;
+
+
+
 
 private slots:
     void onOpen();
@@ -37,6 +53,13 @@ private slots:
     void onDurationChanged(qint64 duration);
     void onPositionChanged(qint64 position);
     void onVolumeChanged(int volume);
+    void showFullScreen();
+    void alAcercade();
+
+
+
+
+
 
 };
 
